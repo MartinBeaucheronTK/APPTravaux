@@ -1,0 +1,12 @@
+<p mat-dialog-title> test</p>
+<mat-dialog-content>
+    <p>Quel secteur pour vos travaux le {{data.day}} {{data.month}}</p>
+    <mat-form-field>
+      <mat-label>Secteur choisi</mat-label>
+      <input matInput [(ngModel)]="secteur" />
+    </mat-form-field>
+</mat-dialog-content>
+<mat-dialog-actions>
+    <button mat-button (click)="onNoClick()">Annuler</button>
+    <button mat-button [mat-dialog-close]="secteur()" cdkFocusInitial>Ok</button>
+  </mat-dialog-actions>

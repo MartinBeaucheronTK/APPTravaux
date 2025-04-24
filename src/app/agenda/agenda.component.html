@@ -1,0 +1,55 @@
+<app-home></app-home>
+<div class="component">
+<div class="displayMonth">
+  {{displayMonth}} {{displayYear}}
+</div>
+<div>
+  <div class="groupButton">
+    <input class="buttons" type="button" (click)="decreaseMonth()" value="-" />
+    <input class="buttons middle" type="button" (click)="setCurrentMonth()" value="Ce mois-ci" />
+    <input class="buttons" type="button" (click)="increaseMonth()" value="+" />
+  </div>
+</div>
+<table class='calendar-table' *ngIf="calendar">
+    <thead>
+      <tr>
+        <th>Lundi</th>
+        <th>Mardi</th>
+        <th>Mercredi</th>
+        <th>Jeudi</th>
+        <th>Vendredi</th>
+        <th>Samedi</th>
+        <th>Dimanche</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let row of calendar | CustomChunk: 7; let i = index">
+        <td class="calendar-day" (click)="openDialog(monthNames[c.date.getMonth()],c.date.getDate())" [ngClass]="{'past-date': c.isPastDate, 'today': c.isToday}" *ngFor="let c of row; let j = index">
+          <div class="calendar-day-header" [ngClass]="{'blue-date': c.isToday}">
+            <strong>
+              {{c.date.getDate()}}
+            </strong> 
+            <strong *ngIf="c.isToday || (i==0 && j==0) || (c.date.getDate() == 1)"> 
+              {{monthNames[c.date.getMonth()]}}
+              
+            </strong>
+          </div>
+          <div class="calendar-day-content">
+            @if (secteur() ){
+               @if ( month() == monthNames[c.date.getMonth()]) {
+                @if(day == c.date.getDate()){
+                  {{secteur()}}
+                }
+               }
+               
+              }
+          </div>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+
+
+<!-- getSelectedDate(monthNames[c.date.getMonth()],c.date.getDate()) -->

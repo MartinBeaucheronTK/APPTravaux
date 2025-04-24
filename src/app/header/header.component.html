@@ -1,0 +1,28 @@
+<div class="barreTop">
+    <mat-toolbar class="btn">
+      <button mat-raised-button extended class="example-icon" routerLink="home">
+        <mat-icon>
+            home
+        </mat-icon>
+        Application Travaux
+      </button>
+      <mat-menu #menuItem="matMenu">
+        <button mat-menu-item href="">Menu Principal</button>
+        <button mat-menu-item [matMenuTriggerFor]="typePDP" >Créer un PDP</button>
+        <button mat-menu-item>Voir fiche présence EE</button>
+  
+      </mat-menu>
+      <mat-menu #typePDP="matMenu">
+        <button mat-menu-item>PDP contractuel</button>
+        <button mat-menu-item routerLink="/creationPDP">PDP AOF</button>
+        <button mat-menu-item routerLink="/creationPDP">PDP récurent</button>
+      </mat-menu>
+      <button mat-button class="decale">Voir tout les PDP</button> 
+      <form>
+        <mat-form-field>
+          <mat-label>Chercher un PDP</mat-label>
+          <input matInput type="text" class="alignDroite" aria-label="Number"/>
+        </mat-form-field>
+      </form> 
+    </mat-toolbar>
+</div>
