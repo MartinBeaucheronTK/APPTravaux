@@ -150,6 +150,8 @@ export class AgendaComponent implements OnInit {
       console.log('The dialog was closed');
       if (result !== undefined) {
         this.secteur.set(result);
+        this.month.set(month);
+        this.day.set(day);
       }
     });
   }

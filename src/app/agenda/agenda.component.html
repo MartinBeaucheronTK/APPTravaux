@@ -37,7 +37,7 @@
           <div class="calendar-day-content">
             @if (secteur() ){
                @if ( month() == monthNames[c.date.getMonth()]) {
-                @if(day == c.date.getDate()){
+                @if(day() == c.date.getDate()){
                   {{secteur()}}
                 }
                }
