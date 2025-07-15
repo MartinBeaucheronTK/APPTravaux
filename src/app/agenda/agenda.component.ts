@@ -1,3 +1,4 @@
+import { listePDP } from './../tableau/tableau.component';
 import { Component,OnInit, Pipe, PipeTransform,NgModule, ChangeDetectionStrategy, signal, model, inject  } from '@angular/core';
 import{CommonModule} from '@angular/common';
 import { CustomChunkPipe, PDP,EE } from '../app.component';
@@ -60,6 +61,7 @@ export class AgendaComponent implements OnInit {
   readonly dialog = inject(MatDialog);
   readonly day = signal('');
   readonly month = signal('');
+  public listePDP : PDP[] = [];
 
 
   
@@ -131,7 +133,37 @@ export class AgendaComponent implements OnInit {
     this.generateCalendarDays(this.monthIndex);
   }
 
-  public selectDate(seletedMonth:number){
+  public addItem(newPDP:PDP){
+    this.listePDP.push(newPDP);
+  }
+  public showItem(searchMonth: string, searchDay:string){
+    let secteur: string = "";
+    for(let i = 0; i< this.listePDP.length; i++){
+
+      if(searchMonth = this.listePDP[i].mois){
+        if(searchDay = this.listePDP[i].jour){
+          secteur = this.listePDP[i].secteur;
+        }
+        else
+        secteur="erreur day";
+      }
+      else
+      secteur="erreur month";
+    }
+    return secteur;
+  }
+
+  public showList(){
+    let finalString="";
+    for(let i = 0; i< this.listePDP.length; i++){
+      finalString = finalString + i + ": " + this.listePDP[i].jour + " ";
+      finalString = finalString + this.listePDP[i].mois + " ";
+      finalString = finalString + this.listePDP[i].secteur + "; ";
+    }
+    return finalString;
+  }
+
+  public selectDate(seletedMonth:number):void{
     this.monthIndex = seletedMonth;
     this.generateCalendarDays(this.monthIndex);
   }
@@ -142,6 +174,9 @@ export class AgendaComponent implements OnInit {
     this.planPrevention.mois = monthName;
   }
   openDialog(month:string, day:string): void {
+    this.secteur.set("");    // this.showItem(this.month(),this.day())
+    this.month.set("");
+    this.day.set("");
     const dialogRef = this.dialog.open(DialogOverviewExampleDialog, {
       data: {secteur: this.secteur(),month: month, day:day},
     });
@@ -152,6 +187,10 @@ export class AgendaComponent implements OnInit {
         this.secteur.set(result);
         this.month.set(month);
         this.day.set(day);
+        this.planPrevention.secteur = result;
+        this.planPrevention.jour = day;
+        this.planPrevention.mois = month;
+        this.listePDP.push(this.planPrevention);
       }
     });
   }
@@ -160,7 +199,7 @@ export class AgendaComponent implements OnInit {
 
 @Component({
   selector: 'dialog-overview-example-dialog',
-  templateUrl: 'creation-pdp.component.html',
+  templateUrl: 'creation-pdp.component.html', 
   standalone: true,
   imports: [
     MatFormFieldModule,

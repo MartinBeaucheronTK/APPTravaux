@@ -76,7 +76,8 @@ export class PDP{
     this.titrePDP= "PDP" + this.idPDP;
   }
 
-
-
-
+  public ToString(){
+    let retour: string = this.jour + " " + this.mois + " " + this.secteur
+    return retour;
+  }
 }

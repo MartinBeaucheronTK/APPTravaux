@@ -31,25 +31,22 @@
             </strong> 
             <strong *ngIf="c.isToday || (i==0 && j==0) || (c.date.getDate() == 1)"> 
               {{monthNames[c.date.getMonth()]}}
-              
             </strong>
           </div>
           <div class="calendar-day-content">
-            @if (secteur() ){
+              @if (secteur() ){
                @if ( month() == monthNames[c.date.getMonth()]) {
                 @if(day() == c.date.getDate()){
-                  {{secteur()}}
+                  <!-- {{showItem(monthNames[c.date.getMonth()],c.date.getDate())}} -->
+                   {{showList()}}
                 }
                }
-               
               }
           </div>
         </td>
       </tr>
     </tbody>
   </table>
+
+  
 </div>
-
-
-
-<!-- getSelectedDate(monthNames[c.date.getMonth()],c.date.getDate()) -->
