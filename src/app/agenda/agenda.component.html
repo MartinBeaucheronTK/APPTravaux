@@ -37,8 +37,7 @@
               @if (secteur() ){
                @if ( month() == monthNames[c.date.getMonth()]) {
                 @if(day() == c.date.getDate()){
-                  <!-- {{showItem(monthNames[c.date.getMonth()],c.date.getDate())}} -->
-                   {{showList()}}
+                  {{showItem(monthNames[c.date.getMonth()],c.date.getDate())}}
                 }
                }
               }
@@ -47,6 +46,7 @@
       </tr>
     </tbody>
   </table>
+  {{showList()}}
 
   
 </div>

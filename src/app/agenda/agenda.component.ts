@@ -135,7 +135,9 @@ export class AgendaComponent implements OnInit {
 
   public addItem(newPDP:PDP){
     this.listePDP.push(newPDP);
+    
   }
+
   public showItem(searchMonth: string, searchDay:string){
     let secteur: string = "";
     for(let i = 0; i< this.listePDP.length; i++){
@@ -153,7 +155,13 @@ export class AgendaComponent implements OnInit {
     return secteur;
   }
 
-  public showList(){
+  public showAllItem(){
+    for(let i = 0; i< this.listePDP.length; i++){
+      return this.showItem(this.listePDP[i].mois,this.listePDP[i].jour);
+    }
+    return 
+  }
+    public showList(){
     let finalString="";
     for(let i = 0; i< this.listePDP.length; i++){
       finalString = finalString + i + ": " + this.listePDP[i].jour + " ";
@@ -174,7 +182,7 @@ export class AgendaComponent implements OnInit {
     this.planPrevention.mois = monthName;
   }
   openDialog(month:string, day:string): void {
-    this.secteur.set("");    // this.showItem(this.month(),this.day())
+    this.secteur.set("");    // this.showItem(this.month(),this.day()) a remettre dans la parenthes a la place des guillemets
     this.month.set("");
     this.day.set("");
     const dialogRef = this.dialog.open(DialogOverviewExampleDialog, {
@@ -190,7 +198,7 @@ export class AgendaComponent implements OnInit {
         this.planPrevention.secteur = result;
         this.planPrevention.jour = day;
         this.planPrevention.mois = month;
-        this.listePDP.push(this.planPrevention);
+        this.addItem(this.planPrevention);
       }
     });
   }
