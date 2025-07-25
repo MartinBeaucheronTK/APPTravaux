@@ -24,23 +24,21 @@
     </thead>
     <tbody>
       <tr *ngFor="let row of calendar | CustomChunk: 7; let i = index">
-        <td class="calendar-day" (click)="openDialog(monthNames[c.date.getMonth()],c.date.getDate())" [ngClass]="{'past-date': c.isPastDate, 'today': c.isToday}" *ngFor="let c of row; let j = index">
-          <div class="calendar-day-header" [ngClass]="{'blue-date': c.isToday}">
+        <td class="calendar-day" (click)="openDialog(monthNames[case.date.getMonth()],case.date.getDate())" [ngClass]="{'past-date': case.isPastDate, 'today': case.isToday}" *ngFor="let case of row; let j = index">
+          <div class="calendar-day-header" [ngClass]="{'blue-date': case.isToday}">
             <strong>
-              {{c.date.getDate()}}
-            </strong> 
-            <strong *ngIf="c.isToday || (i==0 && j==0) || (c.date.getDate() == 1)"> 
-              {{monthNames[c.date.getMonth()]}}
+              {{case.date.getDate()}}
+            </strong>
+            <strong *ngIf="case.isToday || (i==0 && j==0) || (case.date.getDate() == 1)"> 
+              {{monthNames[case.date.getMonth()]}}
             </strong>
           </div>
           <div class="calendar-day-content">
-              @if (secteur() ){
-               @if ( month() == monthNames[c.date.getMonth()]) {
-                @if(day() == c.date.getDate()){
-                  {{showItem(monthNames[c.date.getMonth()],c.date.getDate())}}
+               @if ( getMonth(monthNames[case.date.getMonth()])) {
+                @if(getDay(case.date.getDate())){
+                  {{showItem(monthNames[case.date.getMonth()],case.date.getDate())}}
                 }
                }
-              }
           </div>
         </td>
       </tr>

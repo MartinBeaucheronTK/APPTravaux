@@ -27,7 +27,10 @@ import {MatTableModule} from '@angular/material/table';
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })
-export class AppComponent{
+export class AppComponent implements OnInit{
+  ngOnInit(): void {
+    
+  }
   title = 'maquetteApplicationTravaux';
 }
 
@@ -68,16 +71,17 @@ export class EE{
 export class PDP{
   idPDP:number = 0;
   titrePDP:string = "";
-  numOT:string = "";
-  secteur:string="";
+  // numOT:string = "";
+  // secteur:string="";
   jour:string = "";
   mois:string = "";
   constructor(){
-    this.titrePDP= "PDP" + this.idPDP;
+    // this.titrePDP= "PDP" + this.idPDP;
+
   }
 
   public ToString(){
-    let retour: string = this.jour + " " + this.mois + " " + this.secteur
+    let retour: string = this.jour + " " + this.mois + " " + this.titrePDP
     return retour;
   }
 }

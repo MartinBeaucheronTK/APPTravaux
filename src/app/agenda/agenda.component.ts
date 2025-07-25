@@ -19,7 +19,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatDatepickerModule } from '@angular/material/datepicker'
 
 export interface DialogData {
-  secteur: string;
+  titrePDP: string;
   idPDP: string;
   month: string;
   day:string;
@@ -56,13 +56,16 @@ export class AgendaComponent implements OnInit {
 
 
   
-  readonly secteur = signal('');
+  readonly titrePDP = signal('');
   readonly name = model('');
   readonly dialog = inject(MatDialog);
   readonly day = signal('');
   readonly month = signal('');
   public listePDP : PDP[] = [];
-
+  public pdp1 = new PDP();
+  public pdp2 = new PDP();
+  public pdp3 = new PDP(); 
+  
 
   
   public calendar: CalendarDay[] = [];
@@ -75,6 +78,19 @@ export class AgendaComponent implements OnInit {
   ngOnInit(): void {
     // here we initialize the calendar
     this.generateCalendarDays(this.monthIndex);
+    this.pdp1.idPDP=0
+    this.pdp1.jour="5"
+    this.pdp1.mois=this.monthNames[6]
+    this.pdp1.titrePDP="bon anniv"
+    this.pdp2.idPDP=1
+    this.pdp2.jour="17"
+    this.pdp2.mois=this.monthNames[6]
+    this.pdp2.titrePDP="pourquoi pas au final"
+    this.pdp3.idPDP=2
+    this.pdp3.jour="7"
+    this.pdp3.mois=this.monthNames[7]
+    this.pdp3.titrePDP="il faut tester d'autre mois"
+    this.listePDP.push(this.pdp1,this.pdp2,this.pdp3)
   }
 
   private generateCalendarDays(monthIndex: number): void {
@@ -124,7 +140,7 @@ export class AgendaComponent implements OnInit {
   }
 
   public decreaseMonth() {
-    this.monthIndex--
+    this.monthIndex--;
     this.generateCalendarDays(this.monthIndex);
   }
 
@@ -135,24 +151,39 @@ export class AgendaComponent implements OnInit {
 
   public addItem(newPDP:PDP){
     this.listePDP.push(newPDP);
-    
+  }
+
+  public getMonth(searchMonth: string){
+    let condition = false
+    for(let i = 0; i< this.listePDP.length; i++){
+      if(searchMonth == this.listePDP[i].mois){
+        condition = true
+      }
+    }
+    return condition
+  }
+
+  public getDay(searchDay: string){
+    let condition = false
+    for(let i = 0; i< this.listePDP.length; i++){
+      if(searchDay == this.listePDP[i].jour){
+        condition = true
+      }
+    }
+    return condition
   }
 
   public showItem(searchMonth: string, searchDay:string){
-    let secteur: string = "";
+    let titrePDP: string = "";
     for(let i = 0; i< this.listePDP.length; i++){
 
-      if(searchMonth = this.listePDP[i].mois){
-        if(searchDay = this.listePDP[i].jour){
-          secteur = this.listePDP[i].secteur;
+      if(searchMonth == this.listePDP[i].mois){
+        if(searchDay == this.listePDP[i].jour){
+          titrePDP = this.listePDP[i].titrePDP;
         }
-        else
-        secteur="erreur day";
       }
-      else
-      secteur="erreur month";
     }
-    return secteur;
+    return titrePDP;
   }
 
   public showAllItem(){
@@ -161,44 +192,57 @@ export class AgendaComponent implements OnInit {
     }
     return 
   }
-    public showList(){
-    let finalString="";
-    for(let i = 0; i< this.listePDP.length; i++){
-      finalString = finalString + i + ": " + this.listePDP[i].jour + " ";
-      finalString = finalString + this.listePDP[i].mois + " ";
-      finalString = finalString + this.listePDP[i].secteur + "; ";
-    }
-    return finalString;
+
+  public showList(){
+  var finalString="";
+
+  // let i = 0
+  // while(i<this.listePDP.length){
+  //   finalString = finalString + this.listePDP[i].idPDP + ": " + this.listePDP[i].jour + " ";
+  //   finalString = finalString + this.listePDP[i].mois + " ";
+  //   finalString = finalString + this.listePDP[i].titrePDP + "; ";
+  //   i++;
+  // }
+  // for(var PDP in this.listePDP){
+  //   finalString += PDP + ": " + this.listePDP[PDP] + ";";
+  // }
+  for(let i = 0; i< this.listePDP.length; i++){
+    
+    finalString += this.listePDP[i].idPDP + ": " + this.listePDP[i].jour + " ";
+    finalString += this.listePDP[i].mois + " ";
+    finalString += this.listePDP[i].titrePDP + "; ";
   }
+  return finalString;
+  }
+
 
   public selectDate(seletedMonth:number):void{
     this.monthIndex = seletedMonth;
     this.generateCalendarDays(this.monthIndex);
   }
-  planPrevention = new PDP();
-  public getSelectedDate(monthName:string, day:string):void{
-    alert("Vous avez selectionner le " + day + " " + monthName);
-    this.planPrevention.jour = day;
-    this.planPrevention.mois = monthName;
-  }
+ 
   openDialog(month:string, day:string): void {
-    this.secteur.set("");    // this.showItem(this.month(),this.day()) a remettre dans la parenthes a la place des guillemets
+    let planPrevention = new PDP();
+    this.titrePDP.set("");    // this.showItem(this.month(),this.day()) a remettre dans la parenthes a la place des guillemets
     this.month.set("");
     this.day.set("");
     const dialogRef = this.dialog.open(DialogOverviewExampleDialog, {
-      data: {secteur: this.secteur(),month: month, day:day},
+      data: {titrePDP: this.titrePDP(),month: month, day:day},
     });
 
     dialogRef.afterClosed().subscribe(result => {
+      this.titrePDP();
       console.log('The dialog was closed');
       if (result !== undefined) {
-        this.secteur.set(result);
+        this.titrePDP.set(result);
         this.month.set(month);
         this.day.set(day);
-        this.planPrevention.secteur = result;
-        this.planPrevention.jour = day;
-        this.planPrevention.mois = month;
-        this.addItem(this.planPrevention);
+        planPrevention.idPDP = this.listePDP.length + 1;
+        planPrevention.titrePDP = result;
+        planPrevention.jour = day;
+        planPrevention.mois = month;
+        this.listePDP.push(planPrevention)
+        
       }
     });
   }
@@ -227,7 +271,7 @@ export class AgendaComponent implements OnInit {
 export class DialogOverviewExampleDialog {
   readonly dialogRef = inject(MatDialogRef<DialogOverviewExampleDialog>);
   readonly data = inject<DialogData>(MAT_DIALOG_DATA);
-  readonly secteur = model(this.data.secteur);
+  readonly titrePDP = model(this.data.titrePDP);
 
   onNoClick(): void {
     this.dialogRef.close();
