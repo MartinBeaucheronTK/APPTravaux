@@ -17,6 +17,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatDatepickerModule } from '@angular/material/datepicker'
+import { sign } from 'node:crypto';
 
 export interface DialogData {
   titrePDP: string;
@@ -61,6 +62,7 @@ export class AgendaComponent implements OnInit {
   readonly dialog = inject(MatDialog);
   readonly day = signal('');
   readonly month = signal('');
+  readonly year = signal('');
   public listePDP : PDP[] = [];
   public pdp1 = new PDP();
   public pdp2 = new PDP();
@@ -173,6 +175,10 @@ export class AgendaComponent implements OnInit {
     return condition
   }
 
+  public getYear(searchYear: string){
+    
+  }
+
   public showItem(searchMonth: string, searchDay:string){
     let titrePDP: string = "";
     for(let i = 0; i< this.listePDP.length; i++){
@@ -210,6 +216,7 @@ export class AgendaComponent implements OnInit {
     
     finalString += this.listePDP[i].idPDP + ": " + this.listePDP[i].jour + " ";
     finalString += this.listePDP[i].mois + " ";
+    finalString += this.listePDP[i].annee + " ";
     finalString += this.listePDP[i].titrePDP + "; ";
   }
   return finalString;

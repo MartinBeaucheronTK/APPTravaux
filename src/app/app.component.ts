@@ -75,6 +75,7 @@ export class PDP{
   // secteur:string="";
   jour:string = "";
   mois:string = "";
+  annee:string="";
   constructor(){
     // this.titrePDP= "PDP" + this.idPDP;
 

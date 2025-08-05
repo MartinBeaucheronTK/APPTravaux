@@ -34,11 +34,20 @@
             </strong>
           </div>
           <div class="calendar-day-content">
-               @if ( getMonth(monthNames[case.date.getMonth()])) {
-                @if(getDay(case.date.getDate())){
-                  {{showItem(monthNames[case.date.getMonth()],case.date.getDate())}}
-                }
-               }
+            @if ( getMonth(monthNames[case.date.getMonth()])) {
+            @if(getDay(case.date.getDate())){
+              {{case.date.getFullYear()}}
+              {{showItem(monthNames[case.date.getMonth()],case.date.getDate())}}
+            }
+            }
+          </div>
+          <div class="calendar-day-content">
+            @if ( getMonth(monthNames[case.date.getMonth()])) {
+            @if(getDay(case.date.getDate())){
+              {{case.date.getFullYear()}}
+              {{showItem(monthNames[case.date.getMonth()],case.date.getDate())}}
+            }
+            }
           </div>
         </td>
       </tr>
