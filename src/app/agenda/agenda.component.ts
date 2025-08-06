@@ -1,5 +1,5 @@
 import { listePDP } from './../tableau/tableau.component';
-import { Component,OnInit, Pipe, PipeTransform,NgModule, ChangeDetectionStrategy, signal, model, inject  } from '@angular/core';
+import { Component,OnInit, Pipe, PipeTransform,NgModule, ChangeDetectionStrategy, signal, model, inject, ChangeDetectorRef  } from '@angular/core';
 import{CommonModule} from '@angular/common';
 import { CustomChunkPipe, PDP,EE } from '../app.component';
 import { HomeComponent } from "../home/home.component";
@@ -77,20 +77,24 @@ export class AgendaComponent implements OnInit {
   public displayMonth: string = "";
   public displayYear: number = 0;
   private monthIndex: number = 0;
+  constructor(private cdr: ChangeDetectorRef) {}
   ngOnInit(): void {
     // here we initialize the calendar
     this.generateCalendarDays(this.monthIndex);
     this.pdp1.idPDP=0
     this.pdp1.jour="5"
     this.pdp1.mois=this.monthNames[6]
+    this.pdp1.annee="2025"
     this.pdp1.titrePDP="bon anniv"
     this.pdp2.idPDP=1
     this.pdp2.jour="17"
     this.pdp2.mois=this.monthNames[6]
+    this.pdp2.annee="2025"
     this.pdp2.titrePDP="pourquoi pas au final"
     this.pdp3.idPDP=2
     this.pdp3.jour="7"
     this.pdp3.mois=this.monthNames[7]
+    this.pdp3.annee="2025"
     this.pdp3.titrePDP="il faut tester d'autre mois"
     this.listePDP.push(this.pdp1,this.pdp2,this.pdp3)
   }
@@ -176,28 +180,33 @@ export class AgendaComponent implements OnInit {
   }
 
   public getYear(searchYear: string){
-    
-  }
-
-  public showItem(searchMonth: string, searchDay:string){
-    let titrePDP: string = "";
+    let condition = false
     for(let i = 0; i< this.listePDP.length; i++){
-
-      if(searchMonth == this.listePDP[i].mois){
-        if(searchDay == this.listePDP[i].jour){
-          titrePDP = this.listePDP[i].titrePDP;
-        }
+      if(searchYear == this.listePDP[i].annee){
+        condition = true
       }
     }
-    return titrePDP;
+    return condition
+
   }
 
-  public showAllItem(){
-    for(let i = 0; i< this.listePDP.length; i++){
-      return this.showItem(this.listePDP[i].mois,this.listePDP[i].jour);
-    }
-    return 
+  public modifyItem(idPDP: number){
+    alert(idPDP);
   }
+
+public showItems(searchYear: string, searchMonth: string, searchDay: string): PDP[] {
+  const items: PDP[] = [];
+  for (let i = 0; i < this.listePDP.length; i++) {
+    if (
+      searchMonth == this.listePDP[i].mois &&
+      searchDay == this.listePDP[i].jour &&
+      searchYear == this.listePDP[i].annee
+    ) {
+      items.push(this.listePDP[i]);
+    }
+  }
+  return items;
+}
 
   public showList(){
   var finalString="";
@@ -228,13 +237,14 @@ export class AgendaComponent implements OnInit {
     this.generateCalendarDays(this.monthIndex);
   }
  
-  openDialog(month:string, day:string): void {
+  openDialog(year:string, month:string, day:string): void {
     let planPrevention = new PDP();
     this.titrePDP.set("");    // this.showItem(this.month(),this.day()) a remettre dans la parenthes a la place des guillemets
     this.month.set("");
     this.day.set("");
+    this.year.set("");
     const dialogRef = this.dialog.open(DialogOverviewExampleDialog, {
-      data: {titrePDP: this.titrePDP(),month: month, day:day},
+      data: {titrePDP: this.titrePDP(),month: month, day:day,year:year},
     });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -244,11 +254,16 @@ export class AgendaComponent implements OnInit {
         this.titrePDP.set(result);
         this.month.set(month);
         this.day.set(day);
+        this.year.set(year);
         planPrevention.idPDP = this.listePDP.length + 1;
         planPrevention.titrePDP = result;
         planPrevention.jour = day;
         planPrevention.mois = month;
-        this.listePDP.push(planPrevention)
+        planPrevention.annee = year;
+        if(planPrevention.titrePDP!=""){
+          this.listePDP.push(planPrevention);
+          this.cdr.detectChanges();
+        }
         
       }
     });

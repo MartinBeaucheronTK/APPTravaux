@@ -55,15 +55,15 @@
     display: flex;
   }
  .buttons{
-    background-color: rgb(211,211,211);
+    // background-color: rgb(211,211,211);
     border:none;
     padding-left: 15px;
     padding-right: 15px;
-    height: 30px;
+    // height: 30px;
     cursor: pointer;
   }
   .groupButton .buttons:not(:first-child):not(:last-child) {
-      border-radius: 0;
+    border-radius: 0;
   }
   .groupButton .buttons:first-child {
     border-top-left-radius: 15px;
@@ -76,19 +76,20 @@
     padding-right: 20px;
   }
   .buttons:hover{
-    background-color: rgb(185, 185, 185);
+    background-color: rgb(224, 224, 224);
   }
   .displayMonth{
     padding: 10px;
-    font-size: 30px;
+    font-size: 20px;
     display: flex;
     text-align: center;
   }
   .middle{
     padding-left: 30px;
     padding-right: 30px;
-    border-left: 1px solid rgb(185, 185, 185);
-    border-right: 1px solid rgb(185, 185, 185);
+    
+    // border-left: 1px solid rgb(185, 185, 185);
+    // border-right: 1px solid rgb(185, 185, 185);
     
     
   }

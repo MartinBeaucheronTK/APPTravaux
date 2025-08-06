@@ -1,12 +1,9 @@
 <app-home></app-home>
 <div class="component">
-<div class="displayMonth">
-  {{displayMonth}} {{displayYear}}
-</div>
 <div>
   <div class="groupButton">
     <input class="buttons" type="button" (click)="decreaseMonth()" value="-" />
-    <input class="buttons middle" type="button" (click)="setCurrentMonth()" value="Ce mois-ci" />
+    <input class="buttons middle displayMonth" type="button" (click)="setCurrentMonth()" value="{{displayMonth}} {{displayYear}}" />
     <input class="buttons" type="button" (click)="increaseMonth()" value="+" />
   </div>
 </div>
@@ -24,7 +21,7 @@
     </thead>
     <tbody>
       <tr *ngFor="let row of calendar | CustomChunk: 7; let i = index">
-        <td class="calendar-day" (click)="openDialog(monthNames[case.date.getMonth()],case.date.getDate())" [ngClass]="{'past-date': case.isPastDate, 'today': case.isToday}" *ngFor="let case of row; let j = index">
+        <td class="calendar-day" (click)="openDialog(case.date.getFullYear(),monthNames[case.date.getMonth()],case.date.getDate())" [ngClass]="{'past-date': case.isPastDate, 'today': case.isToday}" *ngFor="let case of row; let j = index">
           <div class="calendar-day-header" [ngClass]="{'blue-date': case.isToday}">
             <strong>
               {{case.date.getDate()}}
@@ -33,21 +30,8 @@
               {{monthNames[case.date.getMonth()]}}
             </strong>
           </div>
-          <div class="calendar-day-content">
-            @if ( getMonth(monthNames[case.date.getMonth()])) {
-            @if(getDay(case.date.getDate())){
-              {{case.date.getFullYear()}}
-              {{showItem(monthNames[case.date.getMonth()],case.date.getDate())}}
-            }
-            }
-          </div>
-          <div class="calendar-day-content">
-            @if ( getMonth(monthNames[case.date.getMonth()])) {
-            @if(getDay(case.date.getDate())){
-              {{case.date.getFullYear()}}
-              {{showItem(monthNames[case.date.getMonth()],case.date.getDate())}}
-            }
-            }
+          <div class="calendar-day-content" (click)="modifyItem(item.idPDP); $event.stopPropagation()" *ngFor="let item of showItems(case.date.getFullYear(), monthNames[case.date.getMonth()], case.date.getDate())">
+            {{item.titrePDP}}
           </div>
         </td>
       </tr>
