@@ -30,7 +30,7 @@
               {{monthNames[case.date.getMonth()]}}
             </strong>
           </div>
-          <div class="calendar-day-content" (click)="modifyItem(item.idPDP); $event.stopPropagation()" *ngFor="let item of showItems(case.date.getFullYear(), monthNames[case.date.getMonth()], case.date.getDate())">
+          <div class="calendar-day-content" (click)="modifyItem(item.idPDP,item.titrePDP,item.jour,item.mois,item.annee); $event.stopPropagation()" *ngFor="let item of showItems(case.date.getFullYear(), monthNames[case.date.getMonth()], case.date.getDate())">
             {{item.titrePDP}}
           </div>
         </td>

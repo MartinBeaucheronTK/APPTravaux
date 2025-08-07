@@ -190,8 +190,22 @@ export class AgendaComponent implements OnInit {
 
   }
 
-  public modifyItem(idPDP: number){
-    alert(idPDP);
+  public modifyItem(idPDP: number,titrePDP:string, day:string, month:string, year:string){
+    const dialogRef = this.dialog.open(DialogOverviewExampleDialog, {
+      data: {day:day,month:month,year:year},
+    });
+        dialogRef.afterClosed().subscribe(result => {
+      this.titrePDP();
+      console.log('The dialog was closed');
+      if (result !== undefined) {
+        this.titrePDP.set(result);
+        if(result!=""){
+          this.listePDP[idPDP].titrePDP = result
+          this.cdr.detectChanges();
+        }
+        
+      }
+    });
   }
 
 public showItems(searchYear: string, searchMonth: string, searchDay: string): PDP[] {
@@ -292,6 +306,35 @@ public showItems(searchYear: string, searchMonth: string, searchDay: string): PD
 })
 export class DialogOverviewExampleDialog {
   readonly dialogRef = inject(MatDialogRef<DialogOverviewExampleDialog>);
+  readonly data = inject<DialogData>(MAT_DIALOG_DATA);
+  readonly titrePDP = model(this.data.titrePDP);
+
+  onNoClick(): void {
+    this.dialogRef.close();
+  }
+}
+
+@Component({
+  selector: 'modifDialog',
+  templateUrl: 'modificationPDP.component.html', 
+  standalone: true,
+  imports: [
+    MatFormFieldModule,
+    MatInputModule,
+    FormsModule,
+    MatButtonModule,
+    MatDialogTitle,
+    MatDialogContent,
+    MatDialogActions,
+    MatDialogClose,
+    MatFormFieldModule,
+    MatDatepickerModule,
+    FormsModule,
+    ReactiveFormsModule
+  ],
+})
+export class modifDialog {
+  readonly dialogRef = inject(MatDialogRef<modifDialog>);
   readonly data = inject<DialogData>(MAT_DIALOG_DATA);
   readonly titrePDP = model(this.data.titrePDP);
 

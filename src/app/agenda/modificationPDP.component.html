@@ -1,0 +1,12 @@
+<p mat-dialog-title> test</p>
+<mat-dialog-content>
+    <p>Votre modification pour les travaux du {{data.day}} {{data.month}}</p>
+    <mat-form-field>
+      <mat-label>titrePDP choisi</mat-label>
+      <input matInput [(ngModel)]="titrePDP" />
+    </mat-form-field>
+</mat-dialog-content>
+<mat-dialog-actions>
+    <button mat-button (click)="onNoClick()">Annuler</button>
+    <button mat-button [mat-dialog-close]="titrePDP()" cdkFocusInitial>Ok</button>
+  </mat-dialog-actions>
