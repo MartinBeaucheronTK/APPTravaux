@@ -1,0 +1,14 @@
+<!-- Affiche tous les titres PDP d'une journée -->
+<mat-dialog-content>
+  <ul>
+    <li *ngFor="let pdp of seeListItem(data.day,data.month,data.year)">
+      {{ pdp.titrePDP }}
+    </li>
+  </ul>
+</mat-dialog-content>
+
+<mat-dialog-actions>
+  <button mat-button (click)="openDialog(data.day,data.month,data.year)">Modif PDP</button>
+    <button mat-button (click)="onNoClick()">Annuler</button>
+    <button mat-button [mat-dialog-close]="titrePDP()" cdkFocusInitial>Ok</button>
+</mat-dialog-actions>

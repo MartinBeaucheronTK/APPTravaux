@@ -21,7 +21,10 @@
     </thead>
     <tbody>
       <tr *ngFor="let row of calendar | CustomChunk: 7; let i = index">
-        <td class="calendar-day" (click)="openDialog(case.date.getFullYear(),monthNames[case.date.getMonth()],case.date.getDate())" [ngClass]="{'past-date': case.isPastDate, 'today': case.isToday}" *ngFor="let case of row; let j = index">
+        <td class="calendar-day"
+            (click)="seeListItem(case.date.getDate().toString(), monthNames[case.date.getMonth()], case.date.getFullYear().toString())"
+            [ngClass]="{'past-date': case.isPastDate, 'today': case.isToday}"
+            *ngFor="let case of row; let j = index">
           <div class="calendar-day-header" [ngClass]="{'blue-date': case.isToday}">
             <strong>
               {{case.date.getDate()}}
@@ -30,7 +33,7 @@
               {{monthNames[case.date.getMonth()]}}
             </strong>
           </div>
-          <div class="calendar-day-content" (click)="modifyItem(item.idPDP,item.titrePDP,item.jour,item.mois,item.annee); $event.stopPropagation()" *ngFor="let item of showItems(case.date.getFullYear(), monthNames[case.date.getMonth()], case.date.getDate())">
+          <div class="calendar-day-content" (click)="modifyItem(item.idPDP,item.jour,item.mois,item.annee); $event.stopPropagation()" *ngFor="let item of showItems(case.date.getFullYear(), monthNames[case.date.getMonth()], case.date.getDate())">
             {{item.titrePDP}}
           </div>
         </td>

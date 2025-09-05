@@ -24,6 +24,7 @@ export interface DialogData {
   idPDP: string;
   month: string;
   day:string;
+  year:string;
 }
 export class CalendarDay {
   public date: Date;
@@ -83,17 +84,17 @@ export class AgendaComponent implements OnInit {
     this.generateCalendarDays(this.monthIndex);
     this.pdp1.idPDP=0
     this.pdp1.jour="5"
-    this.pdp1.mois=this.monthNames[6]
+    this.pdp1.mois=this.monthNames[9]
     this.pdp1.annee="2025"
     this.pdp1.titrePDP="bon anniv"
     this.pdp2.idPDP=1
     this.pdp2.jour="17"
-    this.pdp2.mois=this.monthNames[6]
+    this.pdp2.mois=this.monthNames[9]
     this.pdp2.annee="2025"
     this.pdp2.titrePDP="pourquoi pas au final"
     this.pdp3.idPDP=2
     this.pdp3.jour="7"
-    this.pdp3.mois=this.monthNames[7]
+    this.pdp3.mois=this.monthNames[10]
     this.pdp3.annee="2025"
     this.pdp3.titrePDP="il faut tester d'autre mois"
     this.listePDP.push(this.pdp1,this.pdp2,this.pdp3)
@@ -190,23 +191,7 @@ export class AgendaComponent implements OnInit {
 
   }
 
-  public modifyItem(idPDP: number,titrePDP:string, day:string, month:string, year:string){
-    const dialogRef = this.dialog.open(DialogOverviewExampleDialog, {
-      data: {day:day,month:month,year:year},
-    });
-        dialogRef.afterClosed().subscribe(result => {
-      this.titrePDP();
-      console.log('The dialog was closed');
-      if (result !== undefined) {
-        this.titrePDP.set(result);
-        if(result!=""){
-          this.listePDP[idPDP].titrePDP = result
-          this.cdr.detectChanges();
-        }
-        
-      }
-    });
-  }
+  
 
 public showItems(searchYear: string, searchMonth: string, searchDay: string): PDP[] {
   const items: PDP[] = [];
@@ -251,37 +236,43 @@ public showItems(searchYear: string, searchMonth: string, searchDay: string): PD
     this.generateCalendarDays(this.monthIndex);
   }
  
-  openDialog(year:string, month:string, day:string): void {
-    let planPrevention = new PDP();
-    this.titrePDP.set("");    // this.showItem(this.month(),this.day()) a remettre dans la parenthes a la place des guillemets
-    this.month.set("");
-    this.day.set("");
-    this.year.set("");
-    const dialogRef = this.dialog.open(DialogOverviewExampleDialog, {
-      data: {titrePDP: this.titrePDP(),month: month, day:day,year:year},
-    });
+  public getPDPsOfDay(jour: string, mois: string, annee: string): PDP[] {
+    return this.listePDP.filter(
+      pdp => pdp.jour === jour && pdp.mois === mois && pdp.annee === annee
+    );
+  }
 
-    dialogRef.afterClosed().subscribe(result => {
+  //  Début des boites de dialog
+
+  public seeListItem(day:string, month:string, year:string){
+    const dialogRef = this.dialog.open(afficherPDPDialog,{
+      data: {day:day,month:month,year:year},
+    });
+    dialogRef.afterClosed();
+
+  }
+
+  public modifyItem(idPDP: number, day:string, month:string, year:string){
+    const dialogRef = this.dialog.open(DialogOverviewExampleDialog, {
+      data: {day:day,month:month,year:year},
+    });
+        dialogRef.afterClosed().subscribe(result => {
       this.titrePDP();
       console.log('The dialog was closed');
       if (result !== undefined) {
         this.titrePDP.set(result);
-        this.month.set(month);
-        this.day.set(day);
-        this.year.set(year);
-        planPrevention.idPDP = this.listePDP.length + 1;
-        planPrevention.titrePDP = result;
-        planPrevention.jour = day;
-        planPrevention.mois = month;
-        planPrevention.annee = year;
-        if(planPrevention.titrePDP!=""){
-          this.listePDP.push(planPrevention);
+        if(result!=""){
+          this.listePDP[idPDP].titrePDP = result
           this.cdr.detectChanges();
         }
         
       }
     });
   }
+
+
+
+  
 }
 
 
@@ -337,6 +328,81 @@ export class modifDialog {
   readonly dialogRef = inject(MatDialogRef<modifDialog>);
   readonly data = inject<DialogData>(MAT_DIALOG_DATA);
   readonly titrePDP = model(this.data.titrePDP);
+
+  onNoClick(): void {
+    this.dialogRef.close();
+  }
+}
+@Component({
+  selector: 'afficherPDPDialog',
+  templateUrl: 'afficherPDP.component.html', 
+  standalone: true,
+  imports: [
+    AgendaComponent,
+    MatFormFieldModule,
+    MatInputModule,
+    FormsModule,
+    MatButtonModule,
+    MatDialogTitle,
+    MatDialogContent,
+    MatDialogActions,
+    MatDialogClose,
+    MatFormFieldModule,
+    MatDatepickerModule,
+    FormsModule,
+    ReactiveFormsModule,
+    CommonModule,
+  ],
+})
+  export class afficherPDPDialog {
+  agenda = inject(AgendaComponent);
+  readonly dialog = inject(MatDialog);
+  readonly titrePDP = signal('');
+  readonly day = signal('');
+  readonly month = signal('');
+  readonly year = signal('');
+  constructor(private cdr: ChangeDetectorRef) {}
+
+
+  public seeListItem(day:string, month:string, year:string): PDP[] {
+    return this.agenda.listePDP.filter(
+      pdp => pdp.jour === day && pdp.mois === month && pdp.annee === year
+    );
+  };
+  openDialog(year:string, month:string, day:string): void {
+    let planPrevention = new PDP();
+    this.titrePDP.set("");    // this.showItem(this.month(),this.day()) a remettre dans la parenthes a la place des guillemets
+    this.month.set("");
+    this.day.set("");
+    this.year.set("");
+    const dialogRef = this.dialog.open(DialogOverviewExampleDialog, {
+      data: {titrePDP: this.titrePDP(),month: month, day:day,year:year},
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      this.titrePDP();
+      console.log('The dialog was closed');
+      if (result !== undefined) {
+        this.titrePDP.set(result);
+        this.month.set(month);
+        this.day.set(day);
+        this.year.set(year);
+        planPrevention.idPDP = this.agenda.listePDP.length + 1;
+        planPrevention.titrePDP = result;
+        planPrevention.jour = day;
+        planPrevention.mois = month;
+        planPrevention.annee = year;
+        if(planPrevention.titrePDP!=""){
+          this.agenda.listePDP.push(planPrevention);
+          this.cdr.detectChanges();
+        }
+      }
+    });
+  }
+
+
+  readonly dialogRef = inject(MatDialogRef<modifDialog>);
+  readonly data = inject<DialogData>(MAT_DIALOG_DATA);
 
   onNoClick(): void {
     this.dialogRef.close();
