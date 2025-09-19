@@ -62,27 +62,7 @@ export class CustomChunkPipe implements PipeTransform {
   }
 }
 
-export class EE{
-  idEE:number = 0;
-  nomEE: string = "";
-  
-}
 
-export class PDP{
-  idPDP:number = 0;
-  titrePDP:string = "";
-  // numOT:string = "";
-  // secteur:string="";
-  jour:string = "";
-  mois:string = "";
-  annee:string="";
-  constructor(){
-    // this.titrePDP= "PDP" + this.idPDP;
 
-  }
 
-  public ToString(){
-    let retour: string = this.jour + " " + this.mois + " " + this.titrePDP
-    return retour;
-  }
-}
+

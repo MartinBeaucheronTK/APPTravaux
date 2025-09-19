@@ -1,7 +1,12 @@
 import { listePDP } from './../tableau/tableau.component';
 import { Component,OnInit, Pipe, PipeTransform,NgModule, ChangeDetectionStrategy, signal, model, inject, ChangeDetectorRef  } from '@angular/core';
 import{CommonModule} from '@angular/common';
-import { CustomChunkPipe, PDP,EE } from '../app.component';
+import { CustomChunkPipe} from '../app.component';
+import {PDP} from '../models/PDP.model'
+import {DO} from '../models/DO.model'
+import {EE} from '../models/EE.model'
+import {secteur} from '../models/secteur.model'
+import {OT} from '../models/OT.model'
 import { HomeComponent } from "../home/home.component";
 import {
   MAT_DIALOG_DATA,
